@@ -40,3 +40,40 @@ def task_1():
     sorted_cols = missing_counts.sort_values().index.tolist()
     return sorted_cols
 
+# Part 2
+def task_2():
+    global df_bellevue
+
+    if "year" not in df_bellevue.columns:
+        print("Issue: no 'year' column found.")
+        return None
+
+    admissions = df_bellevue.groupby("year").size().reset_index(name="total_admissions")
+    return admissions
+
+# Part 3
+def task_3():
+    global df_bellevue
+
+    if "gender" not in df_bellevue.columns or "age" not in df_bellevue.columns:
+        print("Issue: missing 'gender' or 'age' column.")
+        return None
+
+    avg_age = df_bellevue.groupby("gender")["age"].mean()
+    return avg_age
+
+# Part 4
+def task_4():
+    global df_bellevue
+
+    if "profession" not in df_bellevue.columns:
+        print("Issue: no 'profession' column found.")
+        return None
+
+    # Normalize text
+    df_bellevue["profession"] = df_bellevue["profession"].str.strip().str.lower()
+
+    # Drop missing values
+    profession_counts = df_bellevue["profession"].dropna().value_counts()
+
+    return profession_counts.head(5).index.tolist()
